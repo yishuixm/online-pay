@@ -252,6 +252,46 @@ class WxPayConfig
     }
 
     /**
+     * 获取微支付预支付订单
+     * @param $out_trade_no
+     * @param $goods
+     * @param $total_fee
+     * @param $body
+     * @param $attach
+     * @param $notify_url
+     * @return \成功时返回
+     */
+    public static function GrantWxpayUnifiedOrder($out_trade_no,$goods,$total_fee,$body,$attach,$notify_url){
+        require_once __DIR__."/../wxpay/WxPay.Api.php";
+        require_once __DIR__."/../wxpay/WxPay.JsApiPay.php";
+        require_once __DIR__."/../common/log.php";
+
+        $tools = new JsApiPay();
+        $openId = $tools->GetOpenid();
+
+        $input = new \WxPayUnifiedOrder();
+        $input->SetBody($body);
+        $input->SetAttach($attach);
+        $input->SetOut_trade_no($out_trade_no);
+        $input->SetTotal_fee($total_fee);
+        $input->SetTime_start(date("YmdHis"));
+        $input->SetTime_expire(date("YmdHis", time() + 600));
+        $input->SetGoods_tag($goods);
+        $input->SetNotify_url($notify_url);
+        $input->SetTrade_type("JSAPI");
+        $input->SetOpenid($openId);
+        $result['order'] = WxPayApi::unifiedOrder($input);
+
+        $result['jsApiParameters'] = $tools->GetJsApiParameters($result['order']);
+
+        //获取共享收货地址js函数参数
+        $result['editAddress'] = $tools->GetEditAddressParameters();
+
+
+        return $result;
+    }
+
+    /**
      * 获取微支付CodeUrl
      * @param $out_trade_no
      * @param $goods

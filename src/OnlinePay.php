@@ -417,7 +417,7 @@ class WxPayConfig
                 "returnUrl"			=> $returnUrl,
             ];
 
-            $chinaumsSubmit = \ChinaumsSubmit($chinaums_config);
+            $chinaumsSubmit = new \ChinaumsSubmit($chinaums_config);
             return $chinaumsSubmit->buildRequestForm($params,'立即支付');
         }else{
             return false;

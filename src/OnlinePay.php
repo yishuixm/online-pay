@@ -380,8 +380,8 @@ class WxPayConfig
      */
     public static function setChinaUmsConfig($merchantId,$private_key,$publick_key){
         $chinaums_config['merchantId'] = $merchantId;
-        $chinaums_config['privateKey'] = __DIR__.'/../config/'.$private_key;
-        $chinaums_config['publickKey'] = __DIR__.'/../config/'.$publick_key;
+        $chinaums_config['privateKey'] = $private_key;
+        $chinaums_config['publickKey'] = $publick_key;
 
         $chinaums = base64_encode(serialize($chinaums_config));
 

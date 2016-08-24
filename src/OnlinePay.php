@@ -417,6 +417,7 @@ class WxPayConfig
                 "returnUrl"			=> $returnUrl,
             ];
 
+            require_once __DIR__."/../chinaums/ChinaumsSubmit.php";
             $chinaumsSubmit = new \ChinaumsSubmit($chinaums_config);
             return $chinaumsSubmit->buildRequestForm($params,'立即支付');
         }else{

@@ -371,4 +371,44 @@ class WxPayConfig
         }
         
     }
+
+    /**
+     * 配置银联商务
+     * @param $merchantId 商户号
+     * @param $private_key 私钥
+     * @param $publick_key 公钥
+     */
+    public static function setChinaUmsConfig($merchantId,$private_key,$publick_key){
+        $chinaums_config['merchantId'] = $merchantId;
+        $chinaums_config['privateKey'] = __DIR__.'/../config/'.$private_key;
+        $chinaums_config['publickKey'] = __DIR__.'/../config/'.$publick_key;
+
+        $chinaums = base64_encode(serialize($chinaums_config));
+
+        require_once __DIR__.'/../common/function.php';
+
+        config_write(__DIR__.'/../config/chinaums.config', $chinaums);
+    }
+
+    public static function GrantChinaUmsForm($merOrderId,$amount,$returnUrl,$notifyUrl,$mode,$agentMerchantId,$merchantUserId,$mobile){
+
+        if($config = @file_get_contents(__DIR__.'/../config/chinaums.config')) {
+            $chinaums_config = unserialize(base64_decode($config));
+            $params = [
+                "agentMerchantId"   => $agentMerchantId,
+                "amount"        	=> $amount,
+                "merOrderId"        => $merOrderId,
+                "merchantUserId"    => $merchantUserId,
+                "mobile"            => $mobile,
+                "mode"              => $mode,
+                "notifyUrl"         => $notifyUrl,
+                "returnUrl"			=> $returnUrl,
+            ];
+
+            $chinaumsSubmit = \ChinaumsSubmit($chinaums_config);
+            return $chinaumsSubmit->buildRequestForm($params,'立即支付');
+        }else{
+            return false;
+        }
+    }
 }

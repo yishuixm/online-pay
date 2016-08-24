@@ -390,7 +390,19 @@ class WxPayConfig
         config_write(__DIR__.'/../config/chinaums.config', $chinaums);
     }
 
-    public static function GrantChinaUmsForm($merOrderId,$amount,$returnUrl,$notifyUrl,$mode,$agentMerchantId,$merchantUserId,$mobile){
+    /**
+     * 生成银联商务WEB表单
+     * @param $merOrderId 商户订单号
+     * @param $amount 金额
+     * @param $returnUrl 回跳地址
+     * @param $notifyUrl 通知地址
+     * @param $mode 模式 WEB 使用3
+     * @param $agentMerchantId 可选
+     * @param $merchantUserId 可选
+     * @param $mobile 可选
+     * @return bool
+     */
+    public static function GrantChinaumsForm($merOrderId,$amount,$returnUrl,$notifyUrl,$mode,$agentMerchantId,$merchantUserId,$mobile){
 
         if($config = @file_get_contents(__DIR__.'/../config/chinaums.config')) {
             $chinaums_config = unserialize(base64_decode($config));

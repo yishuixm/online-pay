@@ -102,7 +102,7 @@ class AlipaySubmit {
         }
 
 		//submit按钮控件请不要含有name属性
-        $sHtml = $sHtml."<input type='submit'  value='".$button_name."' style='display:block;'></form>";
+        $sHtml = $sHtml."<button type='submit'>{$button_name}</button></form>";
 		
 		return $sHtml;
 	}

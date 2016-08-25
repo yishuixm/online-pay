@@ -58,14 +58,14 @@ class OnlinePay
      * @param $notify_url
      * @return bool|\请求的URL地址
      */
-    public static function GrantAlipayUrl($out_trade_no,$subject,$total_fee,$body,$return_url,$notify_url){
+    public static function GrantAlipayUrl($out_trade_no,$subject,$total_fee,$body,$return_url,$notify_url,$service='',$show_url=''){
 
         if($config = @file_get_contents(__DIR__.'/../config/alipay.config')){
             $alipay_config = unserialize(base64_decode($config));
             $alipay_config['notify_url'] = $notify_url;
             $alipay_config['return_url'] = $return_url;
             $parameter = array(
-                "service"       => $alipay_config['service'],
+                "service"       => $service?:$alipay_config['service'],
                 "partner"       => $alipay_config['partner'],
                 "seller_id"     => $alipay_config['seller_id'],
                 "payment_type"	=> $alipay_config['payment_type'],
@@ -77,6 +77,7 @@ class OnlinePay
                 "subject"	=> $subject,
                 "total_fee"	=> $total_fee,
                 "body"	=> $body,
+                "show_url"	=> $show_url,
                 "_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
                 //其他业务参数根据在线开发文档，添加参数.文档地址:https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.kiX33I&treeId=62&articleId=103740&docType=1
                 //如"参数名"=>"参数值"
@@ -102,14 +103,14 @@ class OnlinePay
      * @param $notify_url
      * @return bool|\提交表单HTML文本
      */
-    public static function GrantAlipayForm($out_trade_no,$subject,$total_fee,$body,$return_url,$notify_url){
+    public static function GrantAlipayForm($out_trade_no,$subject,$total_fee,$body,$return_url,$notify_url,$service='',$show_url=''){
 
         if($config = @file_get_contents(__DIR__.'/../config/alipay.config')){
             $alipay_config = unserialize(base64_decode($config));
             $alipay_config['notify_url'] = $notify_url;
             $alipay_config['return_url'] = $return_url;
             $parameter = array(
-                "service"       => $alipay_config['service'],
+                "service"       => $service?:$alipay_config['service'],
                 "partner"       => $alipay_config['partner'],
                 "seller_id"     => $alipay_config['seller_id'],
                 "payment_type"	=> $alipay_config['payment_type'],
@@ -121,6 +122,7 @@ class OnlinePay
                 "subject"	=> $subject,
                 "total_fee"	=> $total_fee,
                 "body"	=> $body,
+                "show_url"	=> $show_url,
                 "_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
                 //其他业务参数根据在线开发文档，添加参数.文档地址:https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.kiX33I&treeId=62&articleId=103740&docType=1
                 //如"参数名"=>"参数值"
@@ -378,10 +380,11 @@ class WxPayConfig
      * @param $private_key 私钥
      * @param $publick_key 公钥
      */
-    public static function setChinaUmsConfig($merchantId,$private_key,$publick_key){
+    public static function setChinaumsConfig($merchantId,$private_key,$publick_key,$test){
         $chinaums_config['merchantId'] = $merchantId;
         $chinaums_config['privateKey'] = $private_key;
         $chinaums_config['publickKey'] = $publick_key;
+        $chinaums_config['test'] = $test==='true';
 
         $chinaums = base64_encode(serialize($chinaums_config));
 
@@ -406,6 +409,7 @@ class WxPayConfig
 
         if($config = @file_get_contents(__DIR__.'/../config/chinaums.config')) {
             $chinaums_config = unserialize(base64_decode($config));
+
             $params = [
                 "agentMerchantId"   => $agentMerchantId,
                 "amount"        	=> $amount,
@@ -418,6 +422,7 @@ class WxPayConfig
             ];
 
             require_once __DIR__."/../chinaums/ChinaumsSubmit.php";
+
             $chinaumsSubmit = new \ChinaumsSubmit($chinaums_config);
             return $chinaumsSubmit->buildRequestForm($params,'立即支付');
         }else{

@@ -153,7 +153,7 @@ class OnlinePay
 
         require_once __DIR__."/../alipay/alipay_notify.class.php";
 
-        $alipayNotify = new AlipayNotify($alipay_config);
+        $alipayNotify = new \AlipayNotify($alipay_config);
         if($alipayNotify->verifyReturn()) {
             $out_trade_no = $_GET['out_trade_no'];
             $trade_no = $_GET['trade_no'];
@@ -197,7 +197,7 @@ class OnlinePay
 
         require_once __DIR__."/../alipay/alipay_notify.class.php";
 
-        $alipayNotify = new AlipayNotify($alipay_config);
+        $alipayNotify = new \AlipayNotify($alipay_config);
         if($alipayNotify->verifyNotify()) {
             $out_trade_no = $_POST['out_trade_no'];
             $trade_no = $_POST['trade_no'];

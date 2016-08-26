@@ -1,6 +1,6 @@
 {
     "name": "yishuixm/online-pay",
-    "description": "online-pay",
+    "description": "在线支付接口集合",
     "type": "library",
     "license": "MIT",
     "minimum-stability": "stable",

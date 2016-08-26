@@ -334,7 +334,7 @@ class WxPayConfig
     public static function wxpayNotifyVerify(){
         require_once __DIR__."/../wxpay/PayNotifyCallBack.php";
 
-        $notify = new PayNotifyCallBack();
+        $notify = new \PayNotifyCallBack();
         $notify->Handle(false);
         
         if($data = $notify->getPostData()){

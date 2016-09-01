@@ -13,6 +13,8 @@ require_once "WxPay.Api.php";
  */
 class JsApiPay
 {
+
+	private $curl_timeout = 60;
 	/**
 	 * 
 	 * 网页授权接口微信服务器返回的数据，返回样例如下
